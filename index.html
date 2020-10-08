@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/7.2.2/highcharts.js"></script>
+<link rel="stylesheet" href="https://data.irozhlas.cz/corona-map/highcharts-style.css">
+
+<div id="graf-trackery"></div>
+
+<script>
+    const data = [
+        ["gov.cz","https://gov.cz/",5,0],
+        ["Vojenské zpravodajství","https://vzcr.cz/",2,0],
+        ["Ombudsman","https://www.ochrance.cz/",9,19],
+        ["ÚOOÚ","https://www.uoou.cz/en/",1,0],
+        ["Vězeňská služba","https://www.vscr.cz/",0,3],
+        ["Úřad práce","https://www.uradprace.cz/",0,2],
+        ["GYNmeda","http://www.gynmeda.cz/interupce-miniinterupce-potrat-preruseni-tehotenstvi",3,0],
+        ["Gynekologie FN Brno","https://www.fnbrno.cz/areal-bohunice/gynekologicko-porodnicka-klinika/placene-sluzby/k1447",1,3],
+        ["Gynekoligie Bulovka","https://bulovka.cz/kliniky-a-oddeleni/gynekologicko-porodnicka-klinika/",1,0],
+        ["Gynekologie FN Ostrava","https://www.fno.cz/oddeleni-operacnich-salu/gynekologicko-porodnicka-klinika",2,0],
+        ["Gynekologie Thomayerova nemocnice","http://www.ftn.cz/gynekologie-luzkove-oddeleni-86/",1,0],
+        ["Linka bezpečí","https://www.linkabezpeci.cz/ ",5,2],
+        ["Bílý kruh bezpečí","https://www.bkb.cz/en/",1,0],
+        ["ROSA – centrum pro týrané  ženy","https://www.rosacentrum.cz/",1,0],
+        ["ProFem, o.p.s.","https://www.profem.cz/",2,0],
+        ["ACORUS","www.acorus.cz",1,0],
+        ["Centrum nové naděje","www.cnnfm.cz",1,0],
+        ["Persefona o.s.","www.persefona.cz ",2,0],
+        ["Spondea","https://www.spondea.cz/cz",1,0],
+        ["SANANIM","http://www.sananim.cz/aktuality/108/k-vysledkum-testovani-drogove-zavislych-lidi-bez-pristresi-a-migrantu-na-infekcni-choroby.html",2,0],
+        ["Rozkoš bez rizika","https://rozkosbezrizika.cz/en/",1,0],
+        ["Nevypusť duši","https://nevypustdusi.cz/kde-hledat-pomoc/",3,1],
+        ["Anonymní alkoholici","https://www.anonymnialkoholici.cz/",2,0],
+        ["S barvou ven ","https://www.sbarvouven.cz/",1,0],
+        ["Klub podvečer","https://www.cestadomu.cz/klub-podvecer",2,0],
+        ["PRONATAL","https://pronatal.cz/cs/",4,1],
+        ["GENNET","https://www.gennet.cz/ ",4,1],
+        ["Reprofit","https://www.reprofit.cz/gynekologie/sterilizace-zeny/",5,8],
+        ["Hnutí pro život","https://hnutiprozivot.cz/",2,0]
+    ]
+
+    data.sort((a, b) => {
+        return (b[2] + b[3]) - (a[2] + a[3])
+    })
+
+    Highcharts.chart('graf-trackery', {
+        chart: {
+            type: 'bar',
+            height: 700,
+        },
+        colors: ['#756bb1', '#de2d26'],
+        title: {
+            text: 'Sledovací kódy na vybraných webech'
+        },
+        subtitle: {
+            text: `podle aplikace <a href="javascript:void(0);" onclick="window.open('https://themarkup.org/blacklight', '_blank'); return false;">Blacklight<a>`,
+            useHTML: true
+        },
+        credits: {
+            text: 'k 6. 10. 2020',
+            href: ''
+        },
+        xAxis: {
+            categories: data.map((d) => d[0]),
+            labels: {
+                useHTML: true,
+                formatter: function () {
+                    const url = data.find((d) => d[0] === this.value)[1]
+                    return `<a href="javascript:void(0);" onclick="window.open('https://themarkup.org/blacklight?url=${url}', '_blank'); return false;">${this.value}<a>`
+            }
+        }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'celkem'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'sledovací kódy',
+            data: data.map((d) => d[2])
+        }, {
+            name: 'cookies',
+            data: data.map((d) => d[3])
+        }]
+    });
+</script>
